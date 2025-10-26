@@ -1,0 +1,22 @@
+# Docker ignore file
+node_modules
+npm-debug.log
+.env
+.env.local
+.env.production
+.env.test
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+docker-compose.yml
+coverage
+.nyc_output
+.vscode
+.idea
+*.log
+dist
+build
+.tmp
+.cache

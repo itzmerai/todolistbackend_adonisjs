@@ -1,0 +1,21 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+RUN apk add --no-cache dumb-init
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3333
+
+ENV TZ=UTC
+ENV NODE_ENV=development
+ENV PORT=3333
+ENV HOST=localhost
+ENV LOG_LEVEL=info
+ENV APP_KEY=J3aKxPtmxQtRmZgi8AF1OAmOXTgVaoW9
+
+CMD ["dumb-init", "npm", "run", "dev"]

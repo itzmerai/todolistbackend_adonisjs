@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: angular_project_postgres
+    environment:
+      POSTGRES_DB: list
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      TZ: UTC
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - angular_network
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: angular_project_backend
+    environment:
+      TZ: UTC
+      PORT: 3333
+      HOST: localhost
+      LOG_LEVEL: info
+      APP_KEY: J3aKxPtmxQtRmZgi8AF1OAmOXTgVaoW9
+      NODE_ENV: production
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: 123
+      DB_DATABASE: list
+    ports:
+      - '3333:3333'
+    depends_on:
+      - postgres
+    networks:
+      - angular_network
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  postgres_data:
+
+networks:
+  angular_network:
+    driver: bridge
